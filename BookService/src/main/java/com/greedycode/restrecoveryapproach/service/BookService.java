@@ -1,5 +1,6 @@
 package com.greedycode.restrecoveryapproach.service;
 
+import com.greedycode.restrecoveryapproach.client.AuthorClient;
 import com.greedycode.restrecoveryapproach.model.Book;
 import com.greedycode.restrecoveryapproach.repository.BookRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -12,9 +13,11 @@ import java.util.List;
 public class BookService {
 
     private final BookRepository bookRepository;
+    private final AuthorClient authorClient;
 
-    public BookService(BookRepository bookRepository) {
+    public BookService(BookRepository bookRepository, AuthorClient authorClient) {
         this.bookRepository = bookRepository;
+        this.authorClient = authorClient;
     }
 
     public Book saveBook(Book book){
@@ -35,5 +38,20 @@ public class BookService {
     public Book bookByIsbn(double isbn){
         log.info("fetch the books from database by specific ISBN");
         return bookRepository.findByIsbn(isbn);
+    }
+
+    public List<Object> fetchAllAuthors(){
+        log.info("fetching all authors details...");
+        return authorClient.getAllAuthors();
+    }
+
+    public Object fetchAuthorById(Long id){
+        log.info("fetching author by id");
+        return authorClient.getAuthorById(id);
+    }
+
+    public Object fetchAuthorByName(String name){
+        log.info("fetching author by id");
+        return authorClient.getAuthorByName(name);
     }
 }
